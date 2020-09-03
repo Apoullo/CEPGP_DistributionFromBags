@@ -15,6 +15,8 @@ When the "bid" part is finished, the Loot Master need trade the items manually.
 3. Click on the person with the highest PR, choose the reason for distrubition, and record the winner's GP points.
 4. Manually trade the item to the winner.
 
+Compatible with CEPGP version 1.12.25
+
 ##
 
 CEPGP AnnounceFromBag 是 CEPGP addon 的 plugin。
@@ -29,3 +31,5 @@ CEPGP AnnounceFromBag 是 CEPGP addon 的 plugin。
 2. 在視窗開啟的情況下，Shift+Click 點擊包包裡的裝備，開始進行喊裝流程
 3. 點選PR最高的人，選擇給裝的理由，紀錄獲勝者的GP點數
 4. 手動拿裝給獲勝者
+
+相容於 CEPGP version 1.12.25

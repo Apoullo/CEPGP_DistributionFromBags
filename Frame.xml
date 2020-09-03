@@ -1,0 +1,107 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Script File="CEPGP_AnnounceFromBag.lua"/>
+	
+	<Frame name="CEPGP_AFB_frame" parent="UIParent" hidden="true" enableMouse="true" frameStrata="DIALOG" movable="true" clampedToScreen="true">
+		<Size>
+			<AbsDimension x="400" y="110" />
+		</Size>
+		<Anchors>
+			<Anchor point="TOPLEFT">
+				<Offset>
+					<AbsDimension x="20" y="-100"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<Color r="0" g="0" b="0" />
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11" />
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="35" />
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="35" />
+			</EdgeSize>
+		</Backdrop>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture file="Interface\DialogFrame\UI-DialogBox-Header">
+					<Size>
+						<AbsDimension x="400" y="70"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="12"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<FontString name="$parent_title" inherits="GameFontNormal" text="Distribution From Bag">
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-2"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_desc" inherits="GameFontNormal">
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-30"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="$parent_close" inherits="UIPanelCloseButton">
+				<Size>
+					<AbsDimension x="40" y="40" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-3" y="-3" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						PlaySound(799);
+						CEPGP_AFB_frame:Hide()
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parent_text" inherits="GameFontNormal" justifyH="CENTER">
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parent_title">
+							<Offset>
+								<AbsDimension x="0" y="-20"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnMouseDown>
+				self:StartMoving();
+			</OnMouseDown>
+			<OnMouseUp>
+				self:StopMovingOrSizing();
+			</OnMouseUp>
+		</Scripts>
+	</Frame>
+	
+</Ui>

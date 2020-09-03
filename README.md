@@ -1,4 +1,4 @@
-# CEPGP_DistributionFromBag
+# CEPGP AnnounceFromBag
 
 CEPGP AnnounceFromBag is the plugin of CEPGP addon.
 

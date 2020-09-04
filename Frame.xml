@@ -4,7 +4,7 @@
 	
 	<Frame name="CEPGP_AFB_frame" parent="UIParent" hidden="true" enableMouse="true" frameStrata="DIALOG" movable="true" clampedToScreen="true">
 		<Size>
-			<AbsDimension x="400" y="110" />
+			<AbsDimension x="420" y="120" />
 		</Size>
 		<Anchors>
 			<Anchor point="TOPLEFT">
@@ -87,7 +87,7 @@
 					<Anchors>
 						<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parent_title">
 							<Offset>
-								<AbsDimension x="0" y="-20"/>
+								<AbsDimension x="0" y="-30"/>
 							</Offset>
 						</Anchor>
 					</Anchors>

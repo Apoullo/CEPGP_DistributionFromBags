@@ -1,7 +1,6 @@
 # CEPGP AnnounceFromBag
 
 CEPGP AnnounceFromBag is the plugin of CEPGP addon.
-
 The Loot Master can announce items and distribution calls for the items from inventory.
 This would allow the Loot Master to grab all items on all bosses, and make distribution at the end of the raid.
 When the "bid" part is finished, the Loot Master need to give items manually.

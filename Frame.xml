@@ -41,7 +41,7 @@
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString name="$parent_title" inherits="GameFontNormal" text="Distribution From Bag">
+				<FontString name="$parent_title" inherits="GameFontNormal" text="Announce From Bag">
 					<Anchors>
 						<Anchor point="TOP">
 							<Offset>

@@ -51,9 +51,9 @@ function CEPGP_AFB_init()
 	end
 
 	if (GetLocale() == "zhTW") then
-		_G["CEPGP_AFB_frame_text"]:SetText("Shift+Click 點擊包包裡的物品來開始分配\n\n分配完後要自行手動拿裝給人")
+		_G["CEPGP_AFB_frame_text"]:SetText("Shift+Click 點擊包包裡的物品來開始喊裝\n\n分配完後要自行手動拿裝給人")
 	else
-		_G["CEPGP_AFB_frame_text"]:SetText("Shift+Click an item in inventory to start the loot process.\n\nYou need to give the item to the winner manually.")
+		_G["CEPGP_AFB_frame_text"]:SetText("Shift+Click an item in inventory to start the distribution process.\n\nAt the end, you need to give the item to the winner MANUALLY.")
 	end
 end
 

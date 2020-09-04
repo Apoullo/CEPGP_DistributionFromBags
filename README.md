@@ -11,7 +11,7 @@ When the "bid" part is finished, the Loot Master need to give items manually.
 # How to use
 
 1. Type /cepafb to show up the window
-2. When the window is open, Shift+Click an item in inventory to start the loot process.
+2. When the window is open, Shift+Click an item in inventory to start the distribution process.
 3. Click on the person with the highest PR, choose the reason for distrubition, and record the winner's GP points.
 4. Manually give the item to the winner.
 

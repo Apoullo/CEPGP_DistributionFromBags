@@ -56,7 +56,7 @@ SlashCmdList["CEPGPDFB"] = CEPGP_DFB_SlashCmd
 
 function CEPGP_DFB_init()
 	if (_G.CEPGP) then
-		_G.CEPGP_distribute_popup_give = CEPGP_distribute_popup_give_Hook
+		_G.CEPGP_distribute_popup_give = CEPGP_distribute_popup_give_Override
 	end
 
 	if (GetLocale() == "zhTW") then
@@ -119,8 +119,8 @@ function CEPGP_DFB_LootFrame_Update(itemLink)
 	CEPGP_announce(itemLink, 1, 1, 1)
 end
 
--- [[ CEPGP HOOK ]] --
-function CEPGP_distribute_popup_give_Hook()
+-- [[ CEPGP Override ]] --
+function CEPGP_distribute_popup_give_Override()
 	if not CEPGP_DFB_frame:IsShown() then
 		for i = 1, 40 do
 			if GetMasterLootCandidate(CEPGP_lootSlot, i) == CEPGP_distPlayer then

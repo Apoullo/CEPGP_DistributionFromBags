@@ -1,8 +1,8 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\FrameXML\UI.xsd">
-	<Script File="CEPGP_AnnounceFromBag.lua"/>
+	<Script File="CEPGP_DistributionFromBags.lua"/>
 	
-	<Frame name="CEPGP_AFB_frame" parent="UIParent" hidden="true" enableMouse="true" frameStrata="DIALOG" movable="true" clampedToScreen="true">
+	<Frame name="CEPGP_DFB_frame" parent="UIParent" hidden="true" enableMouse="true" frameStrata="DIALOG" movable="true" clampedToScreen="true">
 		<Size>
 			<AbsDimension x="420" y="120" />
 		</Size>
@@ -41,7 +41,7 @@
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString name="$parent_title" inherits="GameFontNormal" text="Announce From Bag">
+				<FontString name="$parent_title" inherits="GameFontNormal" text="Distribution From Bags">
 					<Anchors>
 						<Anchor point="TOP">
 							<Offset>
@@ -76,7 +76,7 @@
 				<Scripts>
 					<OnClick>
 						PlaySound(799);
-						CEPGP_AFB_frame:Hide()
+						CEPGP_DFB_frame:Hide()
 					</OnClick>
 				</Scripts>
 			</Button>

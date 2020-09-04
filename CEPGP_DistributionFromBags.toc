@@ -1,0 +1,10 @@
+## Title: Classic EPGP DistributionFromBags
+## Version: 1.0.1
+## Author: Apollo @Taiwan
+## Interface: 11305
+## Dependencies: CEPGP
+## LoadWith: CEPGP
+## Notes: A plugin of CEPGP addon that  can start the distribution process from the Loot Master's inventory.
+
+Frame.xml
+CEPGP_DistributionFromBags.lua

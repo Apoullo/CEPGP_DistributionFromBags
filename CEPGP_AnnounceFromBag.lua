@@ -35,16 +35,11 @@ end)
 
 
 local function CEPGP_AFB_SlashCmd(arg)
-	if arg ~= "" then
-		local _, itemLink = GetItemInfo(arg)
-        if itemLink then
-			CEPGP_AFB_LootFrame_Update(arg)
-		else
-			CEPGP_print("|cFFFFFFFFType|r |cFF80FF80/cepafb [ItemLink]|r |cFFFFFFFFto announce the item from bag.|r");
-		end
-	else
+	if not CEPGP_AFB_frame:IsShown()then
 		ShowUIPanel(CEPGP_AFB_frame)
 		OpenAllBags()
+	else
+		HideUIPanel(CEPGP_AFB_frame)
 	end
 end
 
@@ -58,7 +53,7 @@ function CEPGP_AFB_init()
 	if (GetLocale() == "zhTW") then
 		_G["CEPGP_AFB_frame_text"]:SetText("Shift+Click 點擊包包裡的物品來開始分配\n\n分配完後要自行手動拿裝給人")
 	else
-		_G["CEPGP_AFB_frame_text"]:SetText("Shift+Click a item in inventory to start the loot process.\n\nYou need to trade the item to people manually.")
+		_G["CEPGP_AFB_frame_text"]:SetText("Shift+Click an item in inventory to start the loot process.\n\nYou need to give the item to the winner manually.")
 	end
 end
 

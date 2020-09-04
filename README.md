@@ -6,14 +6,14 @@ The Loot Master can announce items and distribution calls for the items from inv
 
 This would allow the Loot Master to grab all items on all bosses, and make distribution at the end of the raid.
 
-When the "bid" part is finished, the Loot Master need trade the items manually.
+When the "bid" part is finished, the Loot Master need to give items manually.
 
 # How to use
 
 1. Type /cepafb to show up the window
-2. When the window is open, Shift+Click a item in inventory to start the loot process.
+2. When the window is open, Shift+Click an item in inventory to start the loot process.
 3. Click on the person with the highest PR, choose the reason for distrubition, and record the winner's GP points.
-4. Manually trade the item to the winner.
+4. Manually give the item to the winner.
 
 Compatible with CEPGP version 1.12.25
 

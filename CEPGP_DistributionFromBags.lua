@@ -78,6 +78,7 @@ end
 frame:SetScript("OnEvent", OnEvent)
 
 function CEPGP_DFB_LootFrame_Update(itemLink)
+
 	if GetLootMethod() ~= "master" then
 		if (GetLocale() == "zhTW") then
 			CEPGP_DFB_print("不在隊長分配模式", 1);
@@ -131,6 +132,8 @@ function CEPGP_distribute_popup_give_Hook()
 		CEPGP_distPlayer = "";
 		
 	else
+		-- local distPlayer = CEPGP_distPlayer
 		CEPGP_handleLoot("LOOT_SLOT_CLEARED", 1)
+		-- CEPGP_DFB_print("You need give " .. CEPGP_distItemLink .. "|c00FFF569 to |r" .. distPlayer .. "|c00FFF569 MANALLY.|r")
 	end
 end

@@ -15,6 +15,15 @@ local frame = CreateFrame("Frame")
 frame:RegisterEvent("VARIABLES_LOADED")
 frame:RegisterEvent("ADDON_LOADED")
 
+function CEPGP_AFB_print(str, err)
+	if not str then return; end;
+	if err == nil then
+		DEFAULT_CHAT_FRAME:AddMessage("|c00FFF569CEPGP_AFB: " .. tostring(str) .. "|r");
+	else
+		DEFAULT_CHAT_FRAME:AddMessage("|c00FFF569CEPGP_AFB:|r " .. "|c00FF0000Error|r|c00FFF569 - " .. tostring(str) .. "|r");
+	end
+end
+-- [[ WOW API HOOK ]] --
 hooksecurefunc("HandleModifiedItemClick", function(link)
 	if CEPGP_AFB_LastLink == link then	-- too quickly
 		if time() - CEPGP_AFB_LastTime < 2 then
@@ -33,7 +42,7 @@ hooksecurefunc("HandleModifiedItemClick", function(link)
 	end
 end)
 
-
+-- [[ CORE ]] --
 local function CEPGP_AFB_SlashCmd(arg)
 	if not CEPGP_AFB_frame:IsShown()then
 		ShowUIPanel(CEPGP_AFB_frame)
@@ -71,16 +80,16 @@ frame:SetScript("OnEvent", OnEvent)
 function CEPGP_AFB_LootFrame_Update(itemLink)
 	if GetLootMethod() ~= "master" then
 		if (GetLocale() == "zhTW") then
-			CEPGP_print("不在隊長分配模式", 1);
+			CEPGP_AFB_print("不在隊長分配模式", 1);
 		else
-			CEPGP_print("The loot method is not Master Looter", 1);
+			CEPGP_AFB_print("The loot method is not Master Looter", 1);
 		end
 		return
 	elseif CEPGP_isML() ~= 0 then
 		if (GetLocale() == "zhTW") then
-			CEPGP_print("你不是分裝者.", 1);
+			CEPGP_AFB_print("你不是分裝者.", 1);
 		else
-			CEPGP_print("You are not the Loot Master.", 1);
+			CEPGP_AFB_print("You are not the Loot Master.", 1);
 		end
 		return
 	end
@@ -109,6 +118,7 @@ function CEPGP_AFB_LootFrame_Update(itemLink)
 	CEPGP_announce(itemLink, 1, 1, 1)
 end
 
+-- [[ CEPGP HOOK ]] --
 function CEPGP_distribute_popup_give_Hook()
 	if not CEPGP_AFB_frame:IsShown() then
 		for i = 1, 40 do
@@ -117,10 +127,10 @@ function CEPGP_distribute_popup_give_Hook()
 				return;
 			end
 		end
-		CEPGP_print(CEPGP_distPlayer .. " is not on the candidate list for loot", true);
+		CEPGP_AFB_print(CEPGP_distPlayer .. " is not on the candidate list for loot", true);
 		CEPGP_distPlayer = "";
 		
 	else
-		CEPGP_handleLoot("LOOT_SLOT_CLEARED", 1)	
+		CEPGP_handleLoot("LOOT_SLOT_CLEARED", 1)
 	end
 end

@@ -131,7 +131,7 @@ function CEPGP_DFB_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5)
 	elseif event == "TRADE_PLAYER_ITEM_CHANGED" then
 		if CEPGP_DFB_Distributing and CEPGP_DFB_DistPlayerBtn and CEPGP_distItemLink then
 			if CEPGP_distItemLink ~= GetTradePlayerItemLink(1) then
-				CEPGP_DFB_print("You put a WRONG ITEM!", true)
+				CEPGP_DFB_print(L["Wrong Item"], true)
 				CancelTrade()
 				CEPGP_DFB_confirmation:Show()
 			end

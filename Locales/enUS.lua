@@ -6,3 +6,4 @@ L["The loot method is not Master Looter"] = true
 L["You are not the Loot Master"] = true
 L[" is the winner. Come to trade with me"] = true
 L[" is the winner"] = " is the winner.\n\nPlease put the item into FIRST SLOT of your trade window."
+L["Wrong Item"] = "You put the wrong item, or you cannot trade this item"

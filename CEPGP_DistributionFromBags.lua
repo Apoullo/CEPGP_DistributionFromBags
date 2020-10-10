@@ -9,6 +9,7 @@ CEPGP_DFB_LastLink = nil
 CEPGP_DFB_Distributing = false
 CEPGP_DFB_DistPlayerBtn = nil
 CEPGP_DFB_IsAnnounced = false
+CEPGP_DFB_distItemLink = nil
 
 SLASH_CEPGPDFB1 = "/CEPDFB"
 SLASH_CEPGPDFB2 = "/cepdfb"
@@ -98,7 +99,7 @@ function CEPGP_DFB_init()
 		CEPGP_DFB_LastLink = nil
 		CEPGP_DFB_Distributing = false
 		CEPGP_DFB_DistPlayerBtn = nil
-		CEPGP_distributing = false
+		CEPGP_Info.Loot.Distributing = false
 		CEPGP_DFB_IsAnnounced = false
 	end)
 	CEPGP_distribute_popup:HookScript("OnHide", function()
@@ -117,20 +118,21 @@ function CEPGP_DFB_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5)
 		CEPGP_DFB_init()
 
 	elseif event == "TRADE_ACCEPT_UPDATE" then
-		if CEPGP_DFB_Distributing and CEPGP_DFB_DistPlayerBtn and CEPGP_distItemLink then
-			if arg1==1 then
-				if CEPGP_distItemLink == GetTradePlayerItemLink(1) then
+		--if CEPGP_DFB_Distributing and CEPGP_DFB_DistPlayerBtn then
+		if CEPGP_DFB_Distributing and CEPGP_DFB_DistPlayerBtn then
+			--if arg1==1 then
+			--	if CEPGP_DFB_distItemLink == GetTradePlayerItemLink(1) then
 					CEPGP_distribute_popup_pass:Hide()
 					CEPGP_ListButton_OnClick(CEPGP_DFB_DistPlayerBtn, "LeftButton")
-				else
-					CEPGP_DFB_print(CEPGP_distItemLink .. " is not in SLOT 1",true)
-				end
-			end
+			--	else
+			--		CEPGP_DFB_print(CEPGP_DFB_distItemLink .. " is not in SLOT 1",true)
+			--	end
+			--end
 		end
 
 	elseif event == "TRADE_PLAYER_ITEM_CHANGED" then
-		if CEPGP_DFB_Distributing and CEPGP_DFB_DistPlayerBtn and CEPGP_distItemLink then
-			if CEPGP_distItemLink ~= GetTradePlayerItemLink(1) then
+		if CEPGP_DFB_Distributing and CEPGP_DFB_DistPlayerBtn then
+			if CEPGP_DFB_distItemLink ~= GetTradePlayerItemLink(1) then
 				CEPGP_DFB_print(L["Wrong Item"], true)
 				CancelTrade()
 				CEPGP_DFB_confirmation:Show()
@@ -138,7 +140,7 @@ function CEPGP_DFB_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5)
 		end
 
 	elseif event == "TRADE_REQUEST_CANCEL" then
-		if CEPGP_DFB_Distributing and CEPGP_DFB_DistPlayerBtn and CEPGP_distItemLink then
+		if CEPGP_DFB_Distributing and CEPGP_DFB_DistPlayerBtn then
 			CEPGP_distribute_popup:Hide()
 			CEPGP_DFB_confirmation:Show()
 		end
@@ -174,9 +176,10 @@ function CEPGP_DFB_LootFrame_Update(itemLink)
 	CEPGP_DFB_Distributing = true
 	CEPGP_DFB_DistPlayerBtn = nil
 	CEPGP_DFB_IsAnnounced = false
+	CEPGP_DFB_distItemLink = itemLink
 
 	CEPGP_frame:Show();
-	CEPGP_mode = "loot";
+	CEPGP_Info.Mode = "loot";
 	CEPGP_toggleFrame("CEPGP_loot");
 	CEPGP_populateFrame(items);
 	CEPGP_announce(itemLink, 1, 1, 1)
@@ -185,9 +188,9 @@ end
 function CEPGP_DFB_ConfirmWinner(player)
 	CEPGP_DFB_confirmation:SetAttribute("player", player)
 	if player == UnitName("player") then
-		_G["CEPGP_DFB_confirmation_desc"]:SetText(CEPGP_distItemLink .. "\n\nTo yourself")
+		_G["CEPGP_DFB_confirmation_desc"]:SetText(CEPGP_DFB_distItemLink .. "\n\nTo yourself")
 	else
-		_G["CEPGP_DFB_confirmation_desc"]:SetText(CEPGP_distItemLink .. "\n\n" .. player ..  L[" is the winner"])
+		_G["CEPGP_DFB_confirmation_desc"]:SetText(CEPGP_DFB_distItemLink .. "\n\n" .. player ..  L[" is the winner"])
 	end
 	CEPGP_DFB_confirmation:Show()
 end

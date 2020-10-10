@@ -1,5 +1,5 @@
 ## Title: Classic EPGP DistributionFromBags
-## Version: 1.0.3
+## Version: 1.13.0
 ## Author: Apollo @Taiwan
 ## Interface: 11305
 ## Dependencies: CEPGP

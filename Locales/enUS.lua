@@ -5,5 +5,5 @@ L["Instruction"] = "Shift+Click an item in inventory to start loot distribution 
 L["The loot method is not Master Looter"] = true
 L["You are not the Loot Master"] = true
 L[" is the winner. Come to trade with me"] = true
-L[" is the winner"] = " is the winner.\n\nPlease put the item into FIRST SLOT of your trade window."
+L[" is the winner"] = " is the winner.\n\n.Press the [Trade] button near the winner.\nPut the item in the first slot of the trading window."
 L["Wrong Item"] = "You put the wrong item, or you cannot trade this item"

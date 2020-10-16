@@ -1,10 +1,10 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\FrameXML\UI.xsd">
 	<Script File="CEPGP_DistributionFromBags.lua"/>
-	
+
 	<Frame name="CEPGP_DFB_frame" parent="UIParent" hidden="true" enableMouse="true" frameStrata="DIALOG" movable="true" clampedToScreen="true">
 		<Size>
-			<AbsDimension x="420" y="120" />
+			<AbsDimension x="420" y="180" />
 		</Size>
 		<Anchors>
 			<Anchor point="TOPLEFT">
@@ -60,6 +60,27 @@
 					</Anchors>
 				</FontString>
 			</Layer>
+			<Layer level="OVERLAY">
+				<FontString name="$parent_text" inherits="GameFontNormal" justifyH="CENTER">
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parent_title">
+							<Offset>
+								<AbsDimension x="0" y="-30"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer level="OVERLAY">
+				<FontString name="$parent_no_trade_text" inherits="GameFontNormal" justifyH="LEFT"> 
+					<Color r="1" g="1" b="1"/>
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parent_text">
+							<AbsDimension x="20" y="-30" />
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
 		</Layers>
 		<Frames>
 			<Button name="$parent_close" inherits="UIPanelCloseButton">
@@ -80,20 +101,38 @@
 					</OnClick>
 				</Scripts>
 			</Button>
+			<CheckButton name="$parent_no_trade" inherits="UIOptionsCheckButtonTemplate">
+				<HitRectInsets>
+					<AbsInset left="0" right="0" top="0" bottom="0" />
+				</HitRectInsets>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativePoint="TOPLEFT" relativeTo="$parent_no_trade_text">
+						<Offset>
+							<AbsDimension x="0" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						if self:GetChecked() then
+							CEPGP_DFB_NO_TRADE = true;
+						else
+							CEPGP_DFB_NO_TRADE = false;
+						end
+					</OnClick>
+					<OnShow>
+						if CEPGP_DFB_NO_TRADE then
+							self:SetChecked(true);
+						else
+							self:SetChecked(false);
+						end
+					</OnShow>
+					<OnLeave>
+						GameTooltip:Hide();
+					</OnLeave>
+				</Scripts>
+			</CheckButton>
 		</Frames>
-		<Layers>
-			<Layer level="OVERLAY">
-				<FontString name="$parent_text" inherits="GameFontNormal" justifyH="CENTER">
-					<Anchors>
-						<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parent_title">
-							<Offset>
-								<AbsDimension x="0" y="-30"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-			</Layer>
-		</Layers>
 		<Scripts>
 			<OnMouseDown>
 				self:StartMoving();

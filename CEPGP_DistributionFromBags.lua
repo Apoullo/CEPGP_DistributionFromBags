@@ -15,6 +15,7 @@ SLASH_CEPGPDFB1 = "/CEPDFB"
 SLASH_CEPGPDFB2 = "/cepdfb"
 
 --[[ SAVED VARIABLES ]]--
+CEPGP_DFB_NO_TRADE = false
 
 --[[ Code ]]--
 local frame = CreateFrame("Frame")
@@ -53,6 +54,13 @@ local function GetBagPosition(itemLink)
 	return bag, slot
 end
 
+local function GuiSetting()
+	--CEPGP_DFB_options:Hide()
+	--CEPGP_DFB_options.name = "Classic EPGP DFB"
+	--CEPGP_DFB_options.okay = SaveSettings
+	--InterfaceOptions_AddCategory(CEPGP_DFB_options)
+end
+
 -- [[ WOW API HOOK ]] --
 -- Shift+Click item to trigger CEPGP_DFB_LootFrame_Update if DFB window is shown
 hooksecurefunc("HandleModifiedItemClick", function(link)
@@ -87,13 +95,16 @@ end
 SlashCmdList["CEPGPDFB"] = CEPGP_DFB_SlashCmd
 
 function CEPGP_DFB_init()
+	GuiSetting()
+
 	if (_G.CEPGP) then
 		_G.CEPGP_distribute_popup_give = CEPGP_distribute_popup_give_Hook
 		_G.CEPGP_ListButton_OnClick = CEPGP_ListButton_OnClick_Hook
 	end
-
+	
 	CEPGP_DFB_confirmation:Hide()
 	_G["CEPGP_DFB_frame_text"]:SetText(L["Instruction"] )
+	_G["CEPGP_DFB_frame_no_trade_text"]:SetText(L["Give GP without Trade confirm"] )
 	CEPGP_DFB_frame:HookScript("OnHide", function()
 		CEPGP_DFB_LastTime = 0
 		CEPGP_DFB_LastLink = nil
@@ -199,6 +210,13 @@ end
 function CEPGP_DFB_AnnounceWinner(isWinner)
 	if isWinner then
 		local player = CEPGP_DFB_confirmation:GetAttribute("player")
+
+		if CEPGP_DFB_NO_TRADE then	-- Without Trade Comfirm
+			CEPGP_DFB_confirmation:Hide();
+			CEPGP_ListButton_OnClick(CEPGP_DFB_DistPlayerBtn, "LeftButton")
+			return
+		end
+
 		if player == UnitName("player") then
 			CEPGP_DFB_confirmation:Hide();
 			CEPGP_ListButton_OnClick(CEPGP_DFB_DistPlayerBtn, "LeftButton")

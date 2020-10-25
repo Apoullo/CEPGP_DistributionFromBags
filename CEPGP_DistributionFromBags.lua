@@ -10,24 +10,31 @@ CEPGP_DFB_Distributing = false
 CEPGP_DFB_DistPlayerBtn = nil
 CEPGP_DFB_IsAnnounced = false
 CEPGP_DFB_distItemLink = nil
+CEPGP_DFB_BagId = 0
+CEPGP_DFB_SlotId = 0
 
 SLASH_CEPGPDFB1 = "/CEPDFB"
 SLASH_CEPGPDFB2 = "/cepdfb"
 
 --[[ SAVED VARIABLES ]]--
-CEPGP_DFB_NO_TRADE = false
+CEPGP_DFB_No_Trade = false
+CEPGP_DFB_Enabled = true
 
 --[[ Code ]]--
 local frame = CreateFrame("Frame")
 frame:RegisterEvent("VARIABLES_LOADED")
 frame:RegisterEvent("ADDON_LOADED")
+frame:RegisterEvent("TRADE_SHOW")
 frame:RegisterEvent("TRADE_ACCEPT_UPDATE")
 frame:RegisterEvent("TRADE_PLAYER_ITEM_CHANGED")
 frame:RegisterEvent("TRADE_REQUEST_CANCEL")
+frame:RegisterEvent("ITEM_LOCKED")
 
 frame:SetScript("OnEvent", CEPGP_DFB_OnEvent)
 local origCEPGP_ListButton_OnClick = CEPGP_ListButton_OnClick
 local origCEPGP_distribute_popup_give = CEPGP_distribute_popup_give
+
+-- [[ CORE ]] --
 
 function CEPGP_DFB_print(str, err)
 	if not str then return; end;
@@ -38,55 +45,20 @@ function CEPGP_DFB_print(str, err)
 	end
 end
 
-local function GetBagPosition(itemLink)
-    local bag,slot;--   These are nil to start with
-	for i=0, NUM_BAG_SLOTS do
-		for j=1,GetContainerNumSlots(i) do
-			if GetContainerItemLink(i,j)==link then
-				bag,slot=i,j;-- Set vars
-				break;--    Breaks out of inner loop
-			end
-		end
-	
-		--  Break out of outer loop if vars have been set by inner loop
-		if bag and slot then break; end
-	end
-	return bag, slot
+function CEPGP_DFB_toggle()
+    if CEPGP_DFB_Enabled then
+        CEPGP_DFB_Enabled= false;
+    else  
+        CEPGP_DFB_Enabled = true;
+    end
 end
 
-local function GuiSetting()
-	--CEPGP_DFB_options:Hide()
-	--CEPGP_DFB_options.name = "Classic EPGP DFB"
-	--CEPGP_DFB_options.okay = SaveSettings
-	--InterfaceOptions_AddCategory(CEPGP_DFB_options)
-end
-
--- [[ WOW API HOOK ]] --
--- Shift+Click item to trigger CEPGP_DFB_LootFrame_Update if DFB window is shown
-hooksecurefunc("HandleModifiedItemClick", function(link)
-	if CEPGP_DFB_LastLink == link then	-- duplicate calls 
-		if time() - CEPGP_DFB_LastTime < 2 then	
-			return
+function CEPGP_DFB_SlashCmd(arg)
+	if not CEPGP_DFB_frame:IsShown() then
+		if CEPGP_DFB_Enabled then
+			ShowUIPanel(CEPGP_DFB_frame)
+			OpenAllBags()
 		end
-	end
-
-	if CEPGP_DFB_frame:IsShown() and not ChatEdit_GetActiveWindow() then
-		local _, itemLink = GetItemInfo(link)
-		if itemLink then
-			CEPGP_DFB_LootFrame_Update(itemLink)
-		end
-
-		CEPGP_DFB_LastTime = time()
-		CEPGP_DFB_LastLink = link
-	end
-end)
-
--- [[ CORE ]] --
-
-local function CEPGP_DFB_SlashCmd(arg)
-	if not CEPGP_DFB_frame:IsShown()then
-		ShowUIPanel(CEPGP_DFB_frame)
-		OpenAllBags()
 	else
 		HideUIPanel(CEPGP_DFB_frame)
 	end
@@ -95,7 +67,8 @@ end
 SlashCmdList["CEPGPDFB"] = CEPGP_DFB_SlashCmd
 
 function CEPGP_DFB_init()
-	GuiSetting()
+	
+	CEPGP_addPlugin("CEPGP_DistributionFromBags", nil, CEPGP_DFB_Enabled, CEPGP_DFB_toggle);
 
 	if (_G.CEPGP) then
 		_G.CEPGP_distribute_popup_give = CEPGP_distribute_popup_give_Hook
@@ -105,6 +78,10 @@ function CEPGP_DFB_init()
 	CEPGP_DFB_confirmation:Hide()
 	_G["CEPGP_DFB_frame_text"]:SetText(L["Instruction"] )
 	_G["CEPGP_DFB_frame_no_trade_text"]:SetText(L["Give GP without Trade confirm"] )
+	_G["CEPGP_DFB_error_desc"]:SetText(L["Wrong Item"])
+	_G["CEPGP_distribute_roll_award"]:SetText("")
+	_G["CEPGP_distribute_roll_award"]:SetScript('OnClick', function() end);
+
 	CEPGP_DFB_frame:HookScript("OnHide", function()
 		CEPGP_DFB_LastTime = 0
 		CEPGP_DFB_LastLink = nil
@@ -128,32 +105,45 @@ function CEPGP_DFB_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5)
         CEPGP_DFB_LoadedAddon = true
 		CEPGP_DFB_init()
 
-	elseif event == "TRADE_ACCEPT_UPDATE" then
-		--if CEPGP_DFB_Distributing and CEPGP_DFB_DistPlayerBtn then
+	elseif event == "TRADE_SHOW" then
 		if CEPGP_DFB_Distributing and CEPGP_DFB_DistPlayerBtn then
-			--if arg1==1 then
-			--	if CEPGP_DFB_distItemLink == GetTradePlayerItemLink(1) then
-					CEPGP_distribute_popup_pass:Hide()
-					CEPGP_ListButton_OnClick(CEPGP_DFB_DistPlayerBtn, "LeftButton")
-			--	else
-			--		CEPGP_DFB_print(CEPGP_DFB_distItemLink .. " is not in SLOT 1",true)
-			--	end
-			--end
-		end
-
-	elseif event == "TRADE_PLAYER_ITEM_CHANGED" then
-		if CEPGP_DFB_Distributing and CEPGP_DFB_DistPlayerBtn then
+			PickupContainerItem(CEPGP_DFB_BagId, CEPGP_DFB_SlotId)
+			ClickTradeButton(1)
 			if CEPGP_DFB_distItemLink ~= GetTradePlayerItemLink(1) then
-				CEPGP_DFB_print(L["Wrong Item"], true)
-				CancelTrade()
-				CEPGP_DFB_confirmation:Show()
+				CEPGP_DFB_error_open()
 			end
 		end
 
-	elseif event == "TRADE_REQUEST_CANCEL" then
+	elseif event == "TRADE_ACCEPT_UPDATE" then
 		if CEPGP_DFB_Distributing and CEPGP_DFB_DistPlayerBtn then
+			CEPGP_distribute_popup_pass:Hide()
+			CEPGP_ListButton_OnClick(CEPGP_DFB_DistPlayerBtn, "LeftButton")
+		end
+
+	elseif event == "TRADE_PLAYER_ITEM_CHANGED" then
+		--if CEPGP_DFB_Distributing and CEPGP_DFB_DistPlayerBtn then
+		--	if CEPGP_DFB_distItemLink ~= GetTradePlayerItemLink(1) then	-- didn't put the item on the trade window
+		--		CEPGP_DFB_error_open()
+		--	end
+		--end
+
+	elseif event == "TRADE_REQUEST_CANCEL" then
+		if CEPGP_DFB_Distributing and CEPGP_DFB_DistPlayerBtn and not CEPGP_DFB_error:IsShown() then
 			CEPGP_distribute_popup:Hide()
 			CEPGP_DFB_confirmation:Show()
+		end
+
+	elseif event == "ITEM_LOCKED" then
+		if CEPGP_DFB_frame:IsShown() and not CEPGP_DFB_DistPlayerBtn then
+			CEPGP_DFB_BagId = arg1
+			CEPGP_DFB_SlotId = arg2
+			if arg2 ~= nil then  -- not equipment items
+				ClearCursor()
+				_, _, _, _, _, _, itemLink = GetContainerItemInfo(CEPGP_DFB_BagId, CEPGP_DFB_SlotId)
+				if itemLink then
+					CEPGP_DFB_LootFrame_Update(itemLink)
+				end
+			end
 		end
 	end
 end
@@ -200,18 +190,37 @@ function CEPGP_DFB_ConfirmWinner(player)
 	CEPGP_DFB_confirmation:SetAttribute("player", player)
 	if player == UnitName("player") then
 		_G["CEPGP_DFB_confirmation_desc"]:SetText(CEPGP_DFB_distItemLink .. "\n\nTo yourself")
+		_G["CEPGP_DFB_confirmation_yes"]:SetText("OK")
 	else
 		_G["CEPGP_DFB_confirmation_desc"]:SetText(CEPGP_DFB_distItemLink .. "\n\n" .. player ..  L[" is the winner"])
+		_G["CEPGP_DFB_confirmation_yes"]:SetText("Trade")
 	end
 	CEPGP_DFB_confirmation:Show()
 end
 
+function CEPGP_DFB_error_open()
+	ClearCursor()
+	CancelTrade()
+	local player = CEPGP_DFB_confirmation:GetAttribute("player")
+	_G["CEPGP_DFB_error_desc"]:SetText(player..L["Wrong Item"])	
+	CEPGP_DFB_error:Show()
+	if CEPGP.Loot.RaidWarning then
+		SendChatMessage(player..L["Wrong Item"]  , "RAID_WARNING", CEPGP_LANGUAGE);
+	else
+		SendChatMessage(player..L["Wrong Item"] , "RAID", CEPGP_LANGUAGE);
+	end
+end
+
+function CEPGP_DFB_error_close()
+	CEPGP_DFB_DistPlayerBtn = nil
+	CEPGP_DFB_error:Hide();
+end
 
 function CEPGP_DFB_AnnounceWinner(isWinner)
 	if isWinner then
 		local player = CEPGP_DFB_confirmation:GetAttribute("player")
 
-		if CEPGP_DFB_NO_TRADE then	-- Without Trade Comfirm
+		if CEPGP_DFB_No_Trade then	-- Without Trade Comfirm
 			CEPGP_DFB_confirmation:Hide();
 			CEPGP_ListButton_OnClick(CEPGP_DFB_DistPlayerBtn, "LeftButton")
 			return

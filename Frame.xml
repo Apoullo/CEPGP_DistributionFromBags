@@ -115,13 +115,13 @@
 				<Scripts>
 					<OnClick>
 						if self:GetChecked() then
-							CEPGP_DFB_NO_TRADE = true;
+							CEPGP_DFB_No_Trade = true;
 						else
-							CEPGP_DFB_NO_TRADE = false;
+							CEPGP_DFB_No_Trade = false;
 						end
 					</OnClick>
 					<OnShow>
-						if CEPGP_DFB_NO_TRADE then
+						if CEPGP_DFB_No_Trade then
 							self:SetChecked(true);
 						else
 							self:SetChecked(false);
@@ -218,4 +218,61 @@
 		</Attributes>
 	</Frame>
 
+	<Frame name="CEPGP_DFB_error" parent="UIParent" hidden="true" enableMouse="true" toplevel="true" movable="true" clampedToScreen="true">
+		<Size>
+			<AbsDimension x="400" y="100" />
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER" />
+		</Anchors>
+		<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<Color r="0" g="0" b="0" />
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11" />
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32" />
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="32" />
+			</EdgeSize>
+		</Backdrop>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="CEPGP_DFB_error_desc" inherits="GameFontNormal">
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-30"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="CEPGP_DFB_error_no" inherits="GameMenuButtonTemplate" text="OK">
+				<Size>
+					<AbsDimension x="100" y="31" />
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOM" relativePoint="BOTTOM">
+						<Offset>
+							<AbsDimension x="0" y="10" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						PlaySound(799);
+						CEPGP_DFB_error_close();
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Attributes>
+			<Attribute name="player" type="string" value="" />
+		</Attributes>
+	</Frame>
+	
 </Ui>

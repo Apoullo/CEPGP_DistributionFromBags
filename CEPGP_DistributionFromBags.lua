@@ -45,12 +45,31 @@ function CEPGP_DFB_print(str, err)
 	end
 end
 
+local origCEPGP_distribute_roll_award_OnClick = _G["CEPGP_distribute_roll_award"]:GetScript("OnClick")
+function CEPGP_DFB_CheckCepgpUiOverride(confirm)
+	if CEPGP_DFB_Enabled and CEPGP_DFB_frame:IsShown() and confirm then
+		_G["CEPGP_distribute_roll_award"]:SetText("")
+		_G["CEPGP_distribute_roll_award"]:SetScript('OnClick', function() end);
+		_G["CEPGP_distribute_roll_award"]:SetScript('OnEnter', function() 
+			GameTooltip:SetOwner(_G["CEPGP_distribute_roll_award"], "ANCHOR_TOPRIGHT");
+			GameTooltip:SetText("You can't do \"Award to Highest Roller\" on DFB mode.");
+		end);
+		_G["CEPGP_distribute_roll_award"]:SetScript('OnLeave', function() 
+			GameTooltip:Hide();
+		end);
+	else  
+		_G["CEPGP_distribute_roll_award"]:SetText("Award to Highest Roller")
+		_G["CEPGP_distribute_roll_award"]:SetScript('OnClick', origCEPGP_distribute_roll_award_OnClick)
+		_G["CEPGP_distribute_roll_award"]:SetScript('OnEnter', function() end);
+    end
+end
+
 function CEPGP_DFB_toggle()
     if CEPGP_DFB_Enabled then
-        CEPGP_DFB_Enabled= false;
-    else  
-        CEPGP_DFB_Enabled = true;
-    end
+		CEPGP_DFB_Enabled= false;
+	else  
+		CEPGP_DFB_Enabled = true;
+	end
 end
 
 function CEPGP_DFB_SlashCmd(arg)
@@ -79,23 +98,32 @@ function CEPGP_DFB_init()
 	_G["CEPGP_DFB_frame_text"]:SetText(L["Instruction"] )
 	_G["CEPGP_DFB_frame_no_trade_text"]:SetText(L["Give GP without Trade confirm"] )
 	_G["CEPGP_DFB_error_desc"]:SetText(L["Wrong Item"])
-	_G["CEPGP_distribute_roll_award"]:SetText("")
-	_G["CEPGP_distribute_roll_award"]:SetScript('OnClick', function() end);
 
-	CEPGP_DFB_frame:HookScript("OnHide", function()
+	CEPGP_DFB_frame:SetScript("OnShow", function()
+		CEPGP_DFB_CheckCepgpUiOverride(true)
+	end)
+
+	CEPGP_DFB_frame:SetScript("OnHide", function()
 		CEPGP_DFB_LastTime = 0
 		CEPGP_DFB_LastLink = nil
 		CEPGP_DFB_Distributing = false
 		CEPGP_DFB_DistPlayerBtn = nil
 		CEPGP_Info.Loot.Distributing = false
 		CEPGP_DFB_IsAnnounced = false
+		CEPGP_DFB_CheckCepgpUiOverride(false)
 	end)
+
 	CEPGP_distribute_popup:HookScript("OnHide", function()
-		CEPGP_distribute_popup_pass:Show()
+		if CEPGP_DFB_frame:IsShown() and CEPGP_DFB_Enabled then
+			CEPGP_distribute_popup_pass:Show()
+		end
 	end)
 	CEPGP_distribute_popup_pass:HookScript("OnClick", function()
-		CEPGP_DFB_DistPlayerBtn = nil
+		if CEPGP_DFB_frame:IsShown() and CEPGP_DFB_Enabled then
+			CEPGP_DFB_DistPlayerBtn = nil
+		end
 	end)
+
 end
 
 function CEPGP_DFB_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5)

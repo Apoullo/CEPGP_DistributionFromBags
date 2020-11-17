@@ -4,7 +4,7 @@
 
 	<Frame name="CEPGP_DFB_frame" parent="UIParent" hidden="true" enableMouse="true" frameStrata="DIALOG" movable="true" clampedToScreen="true">
 		<Size>
-			<AbsDimension x="420" y="180" />
+			<AbsDimension x="480" y="180" />
 		</Size>
 		<Anchors>
 			<Anchor point="TOPLEFT">

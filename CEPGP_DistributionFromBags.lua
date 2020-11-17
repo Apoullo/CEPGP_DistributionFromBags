@@ -77,6 +77,8 @@ function CEPGP_DFB_SlashCmd(arg)
 		if CEPGP_DFB_Enabled then
 			ShowUIPanel(CEPGP_DFB_frame)
 			OpenAllBags()
+		else
+			CEPGP_DFB_print("Please check CEPGP Config->Plugin Manager.", 1);
 		end
 	else
 		HideUIPanel(CEPGP_DFB_frame)
@@ -162,7 +164,7 @@ function CEPGP_DFB_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5)
 		end
 
 	elseif event == "ITEM_LOCKED" then
-		if CEPGP_DFB_frame:IsShown() and not CEPGP_DFB_DistPlayerBtn then
+		if CEPGP_DFB_frame:IsShown() and not CEPGP_DFB_DistPlayerBtn and IsShiftKeyDown() then
 			CEPGP_DFB_BagId = arg1
 			CEPGP_DFB_SlotId = arg2
 			if arg2 ~= nil then  -- not equipment items

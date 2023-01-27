@@ -137,7 +137,7 @@ function CEPGP_DFB_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5)
 
 	elseif event == "TRADE_SHOW" then
 		if CEPGP_DFB_Distributing and CEPGP_DFB_DistPlayerBtn then
-			PickupContainerItem(CEPGP_DFB_BagId, CEPGP_DFB_SlotId)
+			C_Container.PickupContainerItem(CEPGP_DFB_BagId, CEPGP_DFB_SlotId)
 			ClickTradeButton(1)
 			if CEPGP_DFB_distItemLink ~= GetTradePlayerItemLink(1) then
 				CEPGP_DFB_error_open()
@@ -169,7 +169,7 @@ function CEPGP_DFB_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5)
 			CEPGP_DFB_SlotId = arg2
 			if arg2 ~= nil then  -- not equipment items
 				ClearCursor()
-				_, _, _, _, _, _, itemLink = GetContainerItemInfo(CEPGP_DFB_BagId, CEPGP_DFB_SlotId)
+				itemLink = C_Container.GetContainerItemInfo(CEPGP_DFB_BagId, CEPGP_DFB_SlotId).hyperlink
 				if itemLink then
 					CEPGP_DFB_LootFrame_Update(itemLink)
 				end
